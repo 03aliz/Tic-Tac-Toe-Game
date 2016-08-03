@@ -1,0 +1,512 @@
+$(document).ready(function() {
+  var userChoice;
+  var computerChoice;
+  var dialogBox = $("#dialogBox");
+  var s1 = $("#top-left");
+  var s2 = $("#top");
+  var s3 = $("#top-right");
+  var s4 = $("#left");
+  var s5 = $("#middle");
+  var s6 = $("#right");
+  var s7 = $("#bottom-left");
+  var s8 = $("#bottom");
+  var s9 = $("#bottom-right");
+  var computerMove = 1; // computer moves left
+
+  renderDialog();
+  dialogChoice(); // user chooses X or O
+  move();
+
+  // make dialog box
+  function renderDialog() {
+    var winW = window.innerWidth;
+    var centerDialog = (winW / 2) - (600 * 0.5); // to center
+    dialogBox.css("display", "block")
+    dialogBox.css("left", centerDialog + "px");
+    dialogBox.css("top", "100px")
+  }
+  // make dialog interactive
+  function dialogChoice() {
+    var cross = $('#cross');
+    var circle = $('#circle');
+
+    cross.on("click", function() {
+      dialogBox.css("display", "none");
+      userChoice = "X";
+      computerChoice = "O";
+      computerRandom(); // start random choice by computer
+
+    });
+    circle.on("click", function() {
+      dialogBox.css("display", "none");
+      userChoice = "O";
+      computerChoice = "X";
+      computerRandom();
+
+    });
+  }
+
+  // make function to allow user to click on square to move
+  function move() {
+
+    $("#top-left").on("click", function() {
+      if ($("#top-left").html() === '') {
+        $("#top-left").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+    $("#top").on("click", function() {
+      if ($("#top").html() === '') {
+        $("#top").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+    $("#top-right").on("click", function() {
+      if ($("#top-right").html() === '') {
+        $("#top-right").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      }
+    });
+    $("#left").on("click", function() {
+      if ($("#left").html() === '') {
+        $("#left").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+    $("#middle").on("click", function() {
+      if ($("#middle").html() === '') {
+        $("#middle").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+    $("#right").on("click", function() {
+      if ($("#right").html() === '') {
+        $("#right").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+    $("#bottom-left").on("click", function() {
+      if ($("#bottom-left").html() === '') {
+        $("#bottom-left").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+    $("#bottom").on("click", function() {
+      if ($("#bottom").html() === '') {
+        $("#bottom").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+    $("#bottom-right").on("click", function() {
+      if ($("#bottom-right").html() === '') {
+        $("#bottom-right").text(userChoice);
+        computerMove = 1;
+        userTurn();
+      };
+    });
+
+  };
+
+  // switch turns on every round aswell as check for gameover tests.
+  function userTurn() {
+    computerAI();
+    computerRandom();
+    if (isWinner() || draw()) {
+      restartGame();
+    }
+
+  };
+
+  // check if draw;
+
+  function draw() {
+    var result = false;
+    if (s1.text() != '' && s2.text() != '' && s3.text() != '' && s4.text() != '' && s5.text() != '' && s6.text() != '' && s7.text() != '' && s8.text() != '' && s9.text() != '') {
+      result = true;
+    }
+    return result;
+  };
+
+  //check for winner
+  function isWinner() {
+    var result = false;
+    // first row
+    if (s1.text() == "X" && s2.text() == "X" && s3.text() == "X" || s1.text() == "O" && s2.text() == "O" && s3.text() == "O") {
+      s1.css("background", "green");
+      s2.css("background", "green");
+      s3.css("background", "green");
+
+      result = true;
+    }
+
+    //seconds row
+    else if (s4.text() == "X" && s5.text() == "X" && s6.text() == "X" || s4.text() == "O" && s5.text() == "O" && s6.text() == "O") {
+      s4.css("background", "green");
+      s5.css("background", "green");
+      s6.css("background", "green");
+
+      result = true;
+    }
+
+    //third row   
+    else if (s7.text() == "X" && s8.text() == "X" && s9.text() == "X" || s7.text() == "O" && s8.text() == "O" && s9.text() == "O") {
+      s7.css("background", "green");
+      s8.css("background", "green");
+      s9.css("background", "green");
+
+      result = true;
+    }
+
+    // first column
+    else if (s1.text() == "X" && s4.text() == "X" && s7.text() == "X" || s1.text() == "O" && s4.text() == "O" && s7.text() == "O") {
+      s1.css("background", "green");
+      s4.css("background", "green");
+      s7.css("background", "green");
+
+      result = true
+    }
+    //second column 
+    else if (s2.text() == "X" && s5.text() == "X" && s8.text() == "X" || s2.text() == "O" && s5.text() == "O" && s8.text() == "O") {
+      s2.css("background", "green");
+      s5.css("background", "green");
+      s8.css("background", "green");
+
+      result = true
+    }
+
+    //third column
+    else if (s3.text() == "X" && s6.text() == "X" && s9.text() == "X" || s3.text() == "O" && s6.text() == "O" && s9.text() == "O") {
+      s3.css("background", "green");
+      s6.css("background", "green");
+      s9.css("background", "green");
+
+      result = true
+    }
+
+    // first diagonal
+    else if (s1.text() == "X" && s5.text() == "X" && s9.text() == "X" || s1.text() == "O" && s5.text() == "O" && s9.text() == "O") {
+      s1.css("background", "green");
+      s5.css("background", "green");
+      s9.css("background", "green");
+
+      result = true
+    }
+
+    //second diagonal
+    else if (s3.text() == "X" && s5.text() == "X" && s7.text() == "X" || s3.text() == "O" && s5.text() == "O" && s7.text() == "O") {
+      s3.css("background", "green");
+      s5.css("background", "green");
+      s7.css("background", "green");
+
+      result = true
+    }
+    return result;
+  };
+
+  function restartGame() {
+
+    setTimeout(function() {
+      $(".col-xs-4").text('');
+      $(".col-xs-4").css("background", "red");
+      computerMove = 1;
+      computerRandom();
+
+    }, 2000)
+  };
+
+  function computerAI() {
+    computerBlock();
+    computerWin();
+    computerFork();
+    blockFork();
+  };
+
+  // computer will make move to win
+  function computerWin() {
+    // take third for win
+    // first Row1
+    if (s1.text() == computerChoice && s2.text() == computerChoice && s3.text() == '' && computerMove == 1) {
+      s3.text(computerChoice);
+      computerMove--;
+    }
+    //first Row2
+    else if (s3.text() == computerChoice && s2.text() == computerChoice && s3.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    //second Row
+    else if (s4.text() == computerChoice && s5.text() == computerChoice && s6.text() == '' && computerMove == 1) {
+      s6.text(computerChoice);
+      computerMove--;
+    }
+    //second Row2
+    else if (s6.text() == computerChoice && s5.text() == computerChoice && s4.text() == '' && computerMove == 1) {
+      s4.text(computerChoice);
+      computerMove--;
+    }
+    //third row
+    else if (s7.text() == computerChoice && s8.text() == computerChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //third row2
+    else if (s9.text() == computerChoice && s8.text() == computerChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    }
+    //first column
+    else if (s1.text() == computerChoice && s3.text() == computerChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    }
+    //first column2
+    else if (s7.text() == computerChoice && s4.text() == computerChoice && s1.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    //second column
+    else if (s2.text() == computerChoice && s5.text() == computerChoice && s8.text() == '' && computerMove == 1) {
+      s8.text(computerChoice);
+      computerMove--;
+    }
+    //second column2
+    else if (s8.text() == computerChoice && s5.text() == computerChoice && s2.text() == '' && computerMove == 1) {
+      s2.text(computerChoice);
+      computerMove--;
+    }
+    //third column
+    else if (s3.text() == computerChoice && s6.text() == computerChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //third column2
+    else if (s9.text() == computerChoice && s6.text() == computerChoice && s3.text() == '' && computerMove == 1) {
+      s3.text(computerChoice);
+      computerMove--;
+    }
+    // first diagonal
+    else if (s1.text() == computerChoice && s5.text() == computerChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //first diagonal2
+    else if (s9.text() == computerChoice && s5.text() == computerChoice && s1.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    //second diagonal
+    else if (s3.text() == computerChoice && s5.text() == computerChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    }
+    //second diagonal2
+    else if (s7.text() == computerChoice && s5.text() == computerChoice && s3.text() == '' && computerMove == 1) {
+      s3.text(computerChoice);
+      computerMove--;
+    };
+  };
+  // computer will block opponent move
+  function computerBlock() {
+    // first Row1
+    if (s1.text() == userChoice && s2.text() == userChoice && s3.text() == '' && computerMove == 1) {
+
+      s3.text(computerChoice);
+      computerMove--;
+
+    }
+    //first Row2
+    else if (s3.text() == userChoice && s2.text() == userChoice && s1.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    //first Row3
+    else if (s1.text() == userChoice && s3.text() == userChoice && s2.text() == '' && computerMove == 1) {
+      s2.text(computerChoice);
+      computerMove--;
+    }
+    //second Row
+    else if (s4.text() == userChoice && s5.text() == userChoice && s6.text() == '' && computerMove == 1) {
+      s6.text(computerChoice);
+      computerMove--;
+    }
+    //second Row2
+    else if (s6.text() == userChoice && s5.text() == userChoice && s4.text() == '' && computerMove == 1) {
+      s4.text(computerChoice);
+      computerMove--;
+    }
+    //second Row3
+    else if (s6.text() == userChoice && s4.text() == userChoice && s5.text() == '' && computerMove == 1) {
+      s5.text(computerChoice);
+      computerMove--;
+    };
+
+    //third row
+    if (s7.text() == userChoice && s8.text() == userChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //third row2
+    else if (s9.text() == userChoice && s8.text() == userChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    }
+    //third Row3
+    else if (s9.text() == userChoice && s7.text() == userChoice && s8.text() == '' && computerMove == 1) {
+      s8.text(computerChoice);
+      computerMove--;
+    }
+    //first column
+    else if (s1.text() == userChoice && s3.text() == userChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    }
+    //first column2
+    else if (s7.text() == userChoice && s4.text() == userChoice && s1.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    //first column3
+    else if (s1.text() == userChoice && s7.text() == userChoice && s4.text() == '' && computerMove == 1) {
+      s4.text(computerChoice);
+      computerMove--;
+    }
+    //second column
+    else if (s2.text() == userChoice && s5.text() == userChoice && s8.text() == '' && computerMove == 1) {
+      s8.text(computerChoice);
+      computerMove--;
+    }
+    //second column2
+    else if (s8.text() == userChoice && s5.text() == userChoice && s2.text() == '' && computerMove == 1) {
+      s2.text(computerChoice);
+      computerMove--;
+    }
+    //second column3
+    else if (s2.text() == userChoice && s8.text() == userChoice && s5.text() == '' && computerMove == 1) {
+      s5.text(computerChoice);
+      computerMove--;
+    }
+    //third column
+    else if (s3.text() == userChoice && s6.text() == userChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //third column2
+    else if (s9.text() == userChoice && s6.text() == userChoice && s3.text() == '' && computerMove == 1) {
+      s3.text(computerChoice);
+      computerMove--;
+    }
+    //third column3
+    else if (s3.text() == userChoice && s9.text() == userChoice && s6.text() == '' && computerMove == 1) {
+      s6.text(computerChoice);
+      computerMove--;
+    }
+    // first diagonal
+    else if (s1.text() == userChoice && s5.text() == userChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //first diagonal 2
+    else if (s9.text() == userChoice && s5.text() == userChoice && s1.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    // first diagonal 3
+    else if (s1.text() == userChoice && s9.text() == userChoice && s5.text() == '' && computerMove == 1) {
+      s5.text(computerChoice);
+      computerMove--;
+    }
+
+    //second diagonal
+    else if (s3.text() == userChoice && s5.text() == userChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    }
+    //second diagonal2
+    else if (s7.text() == userChoice && s5.text() == userChoice && s3.text() == '' && computerMove == 1) {
+      s3.text(computerChoice);
+      computerMove--;
+    }
+    //second diagonal 3
+    else if (s7.text() == userChoice && s3.text() == userChoice && s5.text() == '' && computerMove == 1) {
+      s5.text(computerChoice);
+      computerMove--;
+    };
+  };
+  // computer make move to create a fork
+  function computerFork() {
+    // fork1
+    if (s1.text() == computerChoice && s5.text() == computerChoice && s3.text() == '' && computerMove == 1) {
+      s3.text(computerChoice);
+      computerMove--;
+    }
+    //fork2
+    else if (s3.text() == computerChoice && s5.text() == computerChoice && s1.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    //fork3
+    else if (s7.text() == computerChoice && s5.text() == computerChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //fork4
+    else if (s9.text() == computerChoice && s5.text() == computerChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    }
+
+  };
+
+  function blockFork() {
+    // fork1
+    if (s1.text() == userChoice && s5.text() == userChoice && s3.text() == '' && computerMove == 1) {
+      s3.text(computerChoice);
+      computerMove--;
+    }
+    //fork2
+    else if (s3.text() == userChoice && s5.text() == userChoice && s1.text() == '' && computerMove == 1) {
+      s1.text(computerChoice);
+      computerMove--;
+    }
+    //fork3
+    else if (s7.text() == userChoice && s5.text() == userChoice && s9.text() == '' && computerMove == 1) {
+      s9.text(computerChoice);
+      computerMove--;
+    }
+    //fork4
+    else if (s9.text() == userChoice && s5.text() == userChoice && s7.text() == '' && computerMove == 1) {
+      s7.text(computerChoice);
+      computerMove--;
+    };
+  };
+// computer pick random square to place move
+  function computerRandom() {
+
+    var squareArr = [s1, s2, s3, s4, s5, s6, s7, s8, s9];
+    var randomNum = Math.floor(Math.random() * 8);
+
+    if (squareArr[randomNum].text() == '' && computerMove == 1) { // pick random move from squareArr if available
+      squareArr[randomNum].text(computerChoice);
+      computerMove--;
+
+    }
+    // otherwise pick random move using for loop
+    for (var i = 0; i < squareArr.length; i++) {
+      if (squareArr[i].text() == '' && computerMove == 1) {
+        squareArr[i].text(computerChoice);
+        computerMove--;
+
+      }
+    }
+
+  };
+
+});
